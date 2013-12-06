@@ -332,9 +332,12 @@ void request_weather() {
 		http_location_request();
 		return;
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////
+	//ENTER YOUR PHP LOCATION BELOW
 	// Build the HTTP request
 	DictionaryIterator *body;
-	HTTPResult result = http_out_get("http://futtle.com/pebble/j2134gas982hv34s.php", WEATHER_HTTP_COOKIE, &body);
+	HTTPResult result = http_out_get("http://futtle.com/pebble/LINK TO YOUR PHP FILE", WEATHER_HTTP_COOKIE, &body);
 	if(result != HTTP_OK) {
 		weather_layer_set_icon(&weather_layer, WEATHER_ICON_HTTP_ERROR);
 		return;
