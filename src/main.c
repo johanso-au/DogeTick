@@ -337,7 +337,7 @@ void request_weather() {
 	//ENTER YOUR PHP LOCATION BELOW
 	// Build the HTTP request
 	DictionaryIterator *body;
-	HTTPResult result = http_out_get("http://futtle.com/pebble/LINK TO YOUR PHP FILE", WEATHER_HTTP_COOKIE, &body);
+	HTTPResult result = http_out_get("PUT YOUR LINK TO PHP HERE IE HTTP://SOMEWHERE.COM/INDEX.PHP", WEATHER_HTTP_COOKIE, &body);
 	if(result != HTTP_OK) {
 		weather_layer_set_icon(&weather_layer, WEATHER_ICON_HTTP_ERROR);
 		return;
