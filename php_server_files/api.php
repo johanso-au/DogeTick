@@ -11,11 +11,11 @@ function get_data($forecast_url)
     curl_close($ch);
     return $data;
 }
-function get_data2($litecoin_url)
+function get_data2($dogecoin_url)
 {
     $ch2 = curl_init();
     $timeout2 = 0;
-    curl_setopt($ch2,CURLOPT_URL,$litecoin_url);
+    curl_setopt($ch2,CURLOPT_URL,$dogecoin_url);
     curl_setopt($ch2,CURLOPT_RETURNTRANSFER,1);
     curl_setopt($ch2,CURLOPT_CONNECTTIMEOUT,$timeout2);
     $data2 = curl_exec($ch2);
@@ -35,26 +35,26 @@ function get_data3($coinbase_url)
 }
 
 //SET YOUR API KEY HERE
-$api_key='YOUR API HERE';
+$api_key='0c02dddc3f43e866c779f9d241b1cee9';
 
 
-$payload = json_decode(file_get_contents('php://input'), true);
-/*
-if(!$payload) 
-{
+//$payload = json_decode(file_get_contents('php://input'), true);
+//*
+//if(!$payload) 
+//{
  $payload = json_decode('{"1": 411157,"2": -960238,"3": "us"}', true);
-}
-*/
+//}
+//*/
 $payload[1] = $payload[1] / 10000;
 $payload[2] = $payload[2] / 10000;
 
 $forecast_url='https://api.forecast.io/forecast/'.$api_key.'/'.$payload[1].','.$payload[2].'?units='.$payload[3].'&exclude=hourly,minutely,alerts';
-$litecoin_url='https://www.litecoinpool.org/api?api_key=YOUR API HERE';//ENTER YOUR API FROM LITECOINPOOL
+$dogecoin_url='http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132';//132 is the Doge market ID
 $coinbase_url='https://coinbase.com/api/v1/prices/buy';
 
 $forecast = json_decode(get_data($forecast_url)); 
-$coin = json_decode(get_data2($litecoin_url)); 
-$coinbase = json_decode(get_data2($coinbase_url)); 
+$coin = json_decode(get_data2($dogecoin_url)); 
+$coinbase = json_decode(get_data3($coinbase_url)); 
 
 if(!$forecast) {
     die();
@@ -72,8 +72,10 @@ $icons = array(
     'partly-cloudy-day' => 8,
     'partly-cloudy-night' => 9
 );
-$ltc_price = $coin->market->ltc_usd;
-$btc_price = $coin->market->btc_usd;
+$doge_price_raw = $coin->return->markets->DOGE->lasttradeprice;
+$doge_price = $doge_price_raw * 1000000; // gives uBTC
+
+//$btc_price = $coin->market->btc_usd;
 $coinbase_price = $coinbase->total->amount;
 $sunset = $forecast->daily->data[0]->sunsetTime;
 $sunset_h = date('H', $sunset);
@@ -99,6 +101,6 @@ $response[1] = array('b', $icon_id);
 $response[2] = array('s', round($forecast->currently->temperature));
 $response[3] = array('s', round($forecast->daily->data[0]->temperatureMax));
 $response[4] = array('s', round($forecast->daily->data[0]->temperatureMin));
-$response[5] = array('s', intval($ltc_price));
+$response[5] = array('s', intval($doge_price));
 $response[6] = array('s', intval($coinbase_price));
 print json_encode($response);
