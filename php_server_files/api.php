@@ -1,5 +1,9 @@
 <?php
  
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
+
 function get_data($forecast_url)
 {
     $ch = curl_init();
@@ -35,16 +39,16 @@ function get_data3($coinbase_url)
 }
 
 //SET YOUR API KEY HERE
-$api_key='0c02dddc3f43e866c779f9d241b1cee9';
+$api_key='XXX_GETYOUOWNFROMFORECASTDOTIO_XXX';
 
 
-//$payload = json_decode(file_get_contents('php://input'), true);
-//*
-//if(!$payload) 
-//{
- $payload = json_decode('{"1": 411157,"2": -960238,"3": "us"}', true);
-//}
-//*/
+$payload = json_decode(file_get_contents('php://input'), true);
+
+if(!$payload) 
+{
+$payload = json_decode('{"1": 411157,"2": -960238,"3": "us"}', true);
+}
+
 $payload[1] = $payload[1] / 10000;
 $payload[2] = $payload[2] / 10000;
 
@@ -73,10 +77,8 @@ $icons = array(
     'partly-cloudy-night' => 9
 );
 $doge_price_raw = $coin->return->markets->DOGE->lasttradeprice;
-$doge_price = $doge_price_raw * 1000000; // gives uBTC
-
-//$btc_price = $coin->market->btc_usd;
-$coinbase_price = $coinbase->total->amount;
+$doge_price = $doge_price_raw * 100000000; // gives uBTC
+$coinbase_price = $coinbase->total->amount; // Bitcoin Price
 $sunset = $forecast->daily->data[0]->sunsetTime;
 $sunset_h = date('H', $sunset);
 $sunset_m = date('i', $sunset);
@@ -104,3 +106,5 @@ $response[4] = array('s', round($forecast->daily->data[0]->temperatureMin));
 $response[5] = array('s', intval($doge_price));
 $response[6] = array('s', intval($coinbase_price));
 print json_encode($response);
+
+?>
