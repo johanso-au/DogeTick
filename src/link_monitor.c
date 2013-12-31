@@ -51,29 +51,29 @@ void link_monitor_handle_failure(int error)
 #endif
 	}
 	
-	if(__linkStatus == LinkStatusOK)
-	{
+	//if(__linkStatus == LinkStatusOK)
+	//{
 		//The link has just failed, notify the user
 		// Vibe pattern: ON, OFF, ON, ...
-		static const uint32_t const segments[] = { 150, 100, 150, 100, 150, 100, 300 };
-		VibePattern pat = {
-			.durations = segments,
-			.num_segments = ARRAY_LENGTH(segments),
-		};
+		//static const uint32_t const segments[] = { 150, 100, 150, 100, 150, 100, 300 };
+		//VibePattern pat = {
+		//	.durations = segments,
+		//	.num_segments = ARRAY_LENGTH(segments),
+		//};
 	
-		vibes_enqueue_custom_pattern(pat);
-	}
+		//vibes_enqueue_custom_pattern(pat);
+	//}
 	
 	__linkStatus = LinkStatusFailed;
 }
 
 void link_monitor_handle_success()
 {
-	if(__linkStatus == LinkStatusFailed)
-	{
+	//if(__linkStatus == LinkStatusFailed)
+	//{
 		//Notify the user of reconnection
-		vibes_short_pulse();
-	}
+		//vibes_short_pulse();
+	//}
 	
 	__linkStatus = LinkStatusOK;
 }
